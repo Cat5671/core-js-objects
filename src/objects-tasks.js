@@ -131,8 +131,17 @@ function makeImmutable(obj) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  const arrLetter = Object.entries(lettersObject);
+  return arrLetter
+    .reduce((acc, [key, arrInd]) => {
+      arrInd.forEach((value) => {
+        acc[value] = key;
+      });
+
+      return acc;
+    }, [])
+    .join('');
 }
 
 /**
@@ -254,8 +263,13 @@ function fromJSON(proto, json) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  function sort(a, b) {
+    if (a.country !== b.country) return a.country > b.country ? 1 : -1;
+    return a.city > b.city ? 1 : -1;
+  }
+
+  return arr.sort((a, b) => sort(a, b));
 }
 
 /**
@@ -293,8 +307,16 @@ function sortCitiesArray(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const map = new Map();
+  for (let i = 0; i < array.length; i += 1) {
+    const key = keySelector(array[i]);
+    const value = valueSelector(array[i]);
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(value);
+  }
+
+  return map;
 }
 
 /**
